@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)https://v3.bootcss.com/examples/blog/ -->
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://v3.bootcss.com/favicon.ico">
+
+    <title>Blog</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="/static/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/blog.css" rel="stylesheet">
+    <style>
+        .user-menu{
+            position: absolute;
+            top:40px;
+            left: 350px;
+            height: 50px;
+            width: 100px;
+            background-color: #a6e1ec;
+            color: #5e5e5e;
+            z-index: 1;
+        }
+    </style>
+
+    {% block css %}
+
+    {% endblock %}
+
+    <script src="/static/js/ie-emulation-modes-warning.js"></script>
+
+</head>
+
+<body>
+
+<div class="blog-masthead">
+    <div class="container">
+        <nav class="blog-nav">
+            <a class="blog-nav-item active" href="{% url "home" %}">主页</a>
+            <a class="blog-nav-item" href="#">我的博客</a>
+            {% if not user %}
+                <a class="blog-nav-item" href="{% url "login" %}">登录</a>
+            {% else %}
+                <a href="/onesindex/{{ user.blog.surfix }}/" class="blog-nav-item" onmouseover="usermenu()">{{ user.username }}</a>
+                <div class="user-menu hide"  onmouseleave="usermenu()" status='0'>
+                    <ul>
+                      <li><a href="{% url 'login' %}">切换用户</a></li>
+                      <li><a href="{% url 'logout' %}">注销登录</a></li>
+                    </ul>
+                </div>
+            {% endif %}
+
+        </nav>
+    </div>
+</div>
+{% block body %}
+<div class="container">
+
+
+    <div class="blog-header">
+        <h1 class="blog-title">LLBlog</h1>
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+            {% block content %}
+
+            {% endblock %}
+
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+            <div class="sidebar-module sidebar-module-inset">
+                <h4>小提示</h4>
+            </div>
+            <div class="sidebar-module">
+                <h4>ArticleTypes</h4>
+                {% block blog-menu-list %}
+
+                {% endblock %}
+            </div>
+        </div>
+
+    </div><!-- /.row -->
+</div>
+
+
+<footer class="blog-footer">
+
+</footer>
+{% endblock %}
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/js/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/static/js/jquery.min.js"><\/script>')</script>
+<script src="/static/js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+<script>
+    function usermenu(){
+        var $usermenu = $('.user-menu');
+        var $status = $usermenu.attr('status');
+        console.log($status);
+        if ($status === '0'){
+            $usermenu.removeClass('hide');
+            $usermenu.attr('status','1')
+        }
+        else {
+            $usermenu.addClass('hide');
+            $usermenu.attr('status','0')
+        }
+    }
+</script>
+{% block script %}
+
+{% endblock %}
+</body>
+
+</html>

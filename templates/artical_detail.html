@@ -1,0 +1,31 @@
+{% extends 'onesBlogBase.html' %}
+{% load blog_tags %}
+{% block artical_content %}
+    <div class="article-header"><h2>{{ artical_obj.title }}</h2></div>
+    <div class="article-summary"><h5>{{ artical_obj.summary }}</h5></div>
+    <div class="article-content">{{ artical_obj.detail }}</div>
+
+    <br>
+    {#    <div class="blog-footer">评论区</div>#}
+
+    <div class="comment news_pl">
+        <h2>文章评论</h2>
+        <div class="gbko">
+            {% for comment_obj in comment_obj_list %}
+                {% if not comment_obj.Interaction %}
+                    <div class="fb">
+                        <ul>
+                            <p class="fbtime">
+                                <span>{{ comment_obj.ctime }}</span>
+                                {{ comment_obj.user.username }}
+                            </p>
+                            <p class="fbinfo">{{ comment_obj.content }}</p>
+                            {% display_all_comments comment_obj %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

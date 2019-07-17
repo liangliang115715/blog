@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        {% for article in artical_list %}
+        <div class="blog-post">
+            <h2><a href="/articals/{{ article.id }}">{{ article.title }}</a></h2>
+            <p class="blog-post-meta">{{ article.ctime }} by {{ article.blog }}</p>
+            <p>
+                {{ article.summary }}
+            </p>
+        </div>
+        {% endfor %}
+        <footer>
+            <ul class="pagination">
+                {{ page_str }}
+            </ul>
+        </footer>
+
+{% endblock %}
+{% block blog-menu-list %}
+    <ul>
+    {% for type in article_type_list %}
+          <li><a href='/{{ type.0}}/'>{{ type.1 }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
