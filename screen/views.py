@@ -1,8 +1,9 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from screen import models,Forms,pagination
 from django.urls import reverse
-import json
+import json,chunk
 
 
 # Create your views here.
@@ -44,6 +45,21 @@ def artical_detail(request,*args,**kwargs):
 
     return render(request,'artical_detail.html',locals())
 
+
+def ckediter_uploadimg(request):
+    t =request.FILES
+    if t:
+        with open('/static/upload/user_comment_img'+t.name,'wb') as f:
+            for i in t.chunks:
+                f.write(i)
+    dict ={
+        "uploaded": 1,
+        "fileName":t.name ,
+        "url": "/static/upload/user_comment_img"+t.name,
+    }
+
+    return JsonResponse(dict)
+
 def login(request):
     msg = None
     if request.method == "POST":
@@ -81,3 +97,16 @@ def logout(request):
     response = redirect('home')
     response.delete_cookie('cookie_user')
     return response
+
+def regBlog(request,*args,**kwargs):
+    user = models.Users.objects.get(uid=int(kwargs['user']))
+    if request.method == 'GET':
+        regBlogForm = Forms.RegBlogForm(initial={'user':user})
+        regBlogForm.Meta.current_user = user
+    elif request.method == 'POST':
+        regBlogForm = Forms.RegBlogForm(request.POST)
+        if regBlogForm.is_valid():
+            regBlogForm.save()
+            return redirect('home')
+
+    return render(request,'regBlog.html',locals())

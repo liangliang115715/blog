@@ -9,7 +9,7 @@ def display_all_comments(comment_obj,s=''):
         ctime = obj.ctime
         username = obj.user.username
         content = obj.content
-        s=s + '<p class="fbtime"><span>%s</span>%s 回复 %s </p><p class="fbinfo">%s</p>'%(ctime,username,comment_obj.user.username,content)
+        s=s + '<p class="fbtime"><span>%s</span>%s --> %s </p><p class="fbinfo">%s</p>'%(ctime,username,comment_obj.user.username,content)
         if obj.reply.all():
             s = display_all_comments(obj,s)
     return mark_safe(s)

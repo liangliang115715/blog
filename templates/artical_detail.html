@@ -1,4 +1,4 @@
-{% extends 'onesBlogBase.html' %}
+{% extends 'onesindex.html' %}
 {% load blog_tags %}
 {% block artical_content %}
     <div class="article-header"><h2>{{ artical_obj.title }}</h2></div>
@@ -6,7 +6,6 @@
     <div class="article-content">{{ artical_obj.detail }}</div>
 
     <br>
-    {#    <div class="blog-footer">评论区</div>#}
 
     <div class="comment news_pl">
         <h2>文章评论</h2>
@@ -26,6 +25,46 @@
                 {% endif %}
             {% endfor %}
         </div>
-
     </div>
+    <div id="user-comment" class="comment">
+        <h2>您的金玉良言</h2>
+        <textarea name="editor" id="editor"></textarea>
+        <button class="btn btn-success" id="comment-submit-button">提交</button>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="/static/plugins/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('editor');
+        // 直接将配置内容写在function函数内即可
+        CKEDITOR.editorConfig = function (config) {
+            config.uiColor = '#f1e4db';
+            config.height = 200;
+            config.removePlugins = 'elementspath,resize'; // 移除编辑器底部状态栏显示的元素路径和调整编辑器大小的按钮
+            config.allowedContent = false; // 是否允许使用源码模式进行编辑
+            config.forcePasteAsPlainText = true; // 是否强制复制过来的文字去除格式
+            config.enterMode = CKEDITOR.ENTER_BR; // 编辑器中回车产生的标签CKEDITOR.ENTER_BR(<br>),CKEDITOR.ENTER_P(<p>),CKEDITOR_ENTER(回车)
+            config.filebrowserImageUploadUrl = '/articals/ckediter/uploadimg/';
+            // 设置快捷键
+            // 用于实现Ctrl + V进行粘贴
+            // 无此配置，无法进行快捷键粘贴
+            config.keystrokes = [
+                [CKEDITOR.CTRL + 86 /* V */, 'paste']
+            ];
+
+            // 设置快捷键，可能与浏览器冲突plugins/keystrokes/plugin.js
+            // 用于实现Ctrl + V进行粘贴
+            // 此配置将会启动粘贴之前进行过滤，若无此配置，将会出现粘贴之后才弹出过滤框
+            config.blockedKeystrokes = [
+                CKEDITOR.CTRL + 86
+            ];
+
+            // 图片上传相关
+            config.filebrowserImageUploadUrl = 'static/upload/user_comment_img'; // 图片上传路径
+            config.image_previewText = ' '; // 图片信息面板预览区内容的文字内容，默认显示CKEditor自带的内容
+            config.removeDialogTabs = 'image:advanced;image:Link'; // 移除图片上传页面的'高级','链接'页签
+        }
+    </script>
 {% endblock %}

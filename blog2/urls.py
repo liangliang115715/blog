@@ -22,9 +22,11 @@ urlpatterns = [
     path('',views.index,name='home'),
     path('login/', views.login, name='login'),
     path('regist/', views.regist, name='regist'),
+    re_path('regBlog/(?P<user>.+)/$', views.regBlog, name='regBlog'),
     path('logout/', views.logout, name='logout'),
     re_path('index', include('onesblog.urls')),
     re_path('articals/(?P<artical_id>\d+)/$', views.artical_detail, name='artical_detail'),
+    re_path('articals/ckediter/uploadimg/$', views.ckediter_uploadimg, name='ckediter_uploadimg'),
     re_path('(?P<article_type_id>\d+)/$', views.index,name='home'),
 
 ]

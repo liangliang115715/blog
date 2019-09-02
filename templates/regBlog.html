@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block blog-header %}
+    <h1>博客申请</h1>
+{% endblock %}
+{% block content %}
+
+    <form action='{% url 'regBlog' user.uid %}' method="post" onsubmit='cancle_disabled()'>{% csrf_token %}
+        {% for field in regBlogForm %}
+            <div class="row form-group">
+                <div class="col-md-10">
+                    <label for="{{ field.label }}">{{ field.label }}</label>
+                    <div>{{ field }}{{ field.errors.0 }}</div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <input type="submit" value="提交" class="btn-success col-lg-3">
+    </form>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function cancle_disabled(){
+            $('#id_user').removeAttr("disabled");
+            alert('注册成功，请返回主页登录！');
+        }
+
+    </script>
+{% endblock %}
